@@ -1,16 +1,29 @@
 #! /bin/zsh
 
 
-last_mod_tm=""
-cur_mod_tm="$(date -r $(pwd) +"%s")"
 
 test_last_change() {
+	#[-f] tests if a last mod file exists
+	if [-f last_mod_file]; then
+		#read contents of file into varibale last_mod_tm
+	else
+		last_mod_tm=""
+	fi
+	cur_mod_tm="$(date -r $(pwd)/Media +"%s")"
+
 	#tests the last time directory was modified(is the media playlist the same)
 	if [[ "$cur_mod_tm" == "$last_mod_tm" ]]; then
 		echo "equal"
+		true
 	else
 		echo "NOT equal"
+		false
+		date -r $(pwd)/Media +"%s"
 	fi
+
+	echo $last_mod_tm
+	echo $cur_mod_tm
+
 }
 
 setup_media_index() {
@@ -28,7 +41,7 @@ select_rand_media() {
 
 play_media() {
 	#randomly selects a media file
-	random_video=$(shuf -n 1 $(shuf -n 5 .media_index))
+	random_video=$(shuf -n 1 .media_index)
 	echo $random_video
 	first_previous_video=""
 	sec_previous_video=""
@@ -37,6 +50,6 @@ play_media() {
 }
 
 
-#test_last_change
+test_last_change
 setup_media_index
 play_media
