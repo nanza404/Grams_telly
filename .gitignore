@@ -1,2 +1,4 @@
 .media_index
 Media/*
+#git cannot track an empty folder so .getkeep is added
+!Media/.gitkeep
